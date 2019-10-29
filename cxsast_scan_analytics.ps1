@@ -1,7 +1,6 @@
 ﻿$server = ""
 $cxUsername = ""
 $cxPassword = ""
-$serverRestEndpoint = $server + "/CxRestAPI/"
 $tableFile = ".\summary.txt"
 $dataFile = ".\data.csv"
 
@@ -129,6 +128,7 @@ function showForm(){
     if ($result -eq [System.Windows.Forms.DialogResult]::OK)
     {
         $server = $cxServer.Text
+        $serverRestEndpoint = $server + "/CxRestAPI/"
         $cxUsername = $cxUser.Text
         $cxPassword = $cxPass.Text
         $obfuscate = $privateCBX.Checked
@@ -140,14 +140,14 @@ function showForm(){
             $useExcel = $true
         }
 
-        main
+        generateReports
     }
 
 }
 
 showForm
 
-function main(){
+function generateReports() {
     Clear-Host
     Remove-Item $tableFile -ErrorAction SilentlyContinue
     Remove-Item $dataFile -ErrorAction SilentlyContinue
