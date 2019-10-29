@@ -18,135 +18,6 @@ $useExcel = $false
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-function showForm(){
-    $form = New-Object System.Windows.Forms.Form
-    $form.ShowIcon = $false
-    $form.Text = 'CxSAST Scans Analysis'
-    $form.Size = New-Object System.Drawing.Size(490,245)
-    $form.StartPosition = 'CenterScreen'
-
-    $OKButton = New-Object System.Windows.Forms.Button
-    $OKButton.Location = New-Object System.Drawing.Point(150,160)
-    $OKButton.Size = New-Object System.Drawing.Size(75,23)
-    $OKButton.Text = 'RUN'
-    $OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
-    $form.AcceptButton = $OKButton
-    $form.Controls.Add($OKButton)
-
-    $CancelButton = New-Object System.Windows.Forms.Button
-    $CancelButton.Location = New-Object System.Drawing.Point(230,160)
-    $CancelButton.Size = New-Object System.Drawing.Size(75,23)
-    $CancelButton.Text = 'CANCEL'
-    $CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
-    $form.CancelButton = $CancelButton
-    $form.Controls.Add($CancelButton)
-
-    $label = New-Object System.Windows.Forms.Label
-    $label.Location = New-Object System.Drawing.Point(20,20)
-    $label.Size = New-Object System.Drawing.Size(130,20)
-    $label.Text = 'CxSAST Host:'
-    $form.Controls.Add($label)
-
-    $cxServer = New-Object System.Windows.Forms.TextBox
-    $cxServer.Location = New-Object System.Drawing.Point(150,20)
-    $cxServer.Size = New-Object System.Drawing.Size(250,20)
-    $form.Controls.Add($cxServer)
-
-    $label = New-Object System.Windows.Forms.Label
-    $label.Location = New-Object System.Drawing.Point(20,45)
-    $label.Size = New-Object System.Drawing.Size(130,20)
-    $label.Text = 'CxSAST Username:'
-    $form.Controls.Add($label)
-
-    $cxUser = New-Object System.Windows.Forms.TextBox
-    $cxUser.Location = New-Object System.Drawing.Point(150,45)
-    $cxUser.Size = New-Object System.Drawing.Size(150,20)
-    $form.Controls.Add($cxUser)
-
-    $label = New-Object System.Windows.Forms.Label
-    $label.Location = New-Object System.Drawing.Point(20,70)
-    $label.Size = New-Object System.Drawing.Size(130,20)
-    $label.Text = 'CxSAST Password:'
-    $form.Controls.Add($label)
-
-    $cxPass = New-Object Windows.Forms.MaskedTextBox
-    $cxPass.PasswordChar = '*'
-    $cxPass.Location = New-Object System.Drawing.Point(150,70)
-    $cxPass.Size = New-Object System.Drawing.Size(150,20)
-    $form.Controls.Add($cxPass)
-
-    $label = New-Object System.Windows.Forms.Label
-    $label.Location = New-Object System.Drawing.Point(20,95)
-    $label.Size = New-Object System.Drawing.Size(130,20)
-    $label.Text = 'Report Type'
-    $form.Controls.Add($label)
-
-    $xlsButton = New-Object System.Windows.Forms.RadioButton
-    $xlsButton.Location = '150,95'
-    $xlsButton.size = '70,20'
-    $xlsButton.Checked = $true 
-    $xlsButton.Text = "Excel"
-    $form.Controls.Add($xlsButton)
- 
-    $csvButton = New-Object System.Windows.Forms.RadioButton
-    $csvButton.Location = '220,95'
-    $csvButton.size = '150,20'
-    $csvButton.Checked = $false
-    $csvButton.Text = "Text Summary + CSV"
-    $form.Controls.Add($csvButton)
-
-    $privateCBX = New-Object System.Windows.Forms.CheckBox
-    $privateCBX.Location = '150,120'
-    $privateCBX.size = '350,20'
-    $privateCBX.Checked = $false
-    $privateCBX.Text = "Remove any identifying information (e.g., project name)"
-    $form.Controls.Add($privateCBX)
-
-    $cxServer.Text = $server
-    $cxUser.Text = $cxUsername
-    $cxPass.Text = $cxPassword
-
-    $tooltip1 = New-Object System.Windows.Forms.ToolTip
-    $tooltip1.SetToolTip($csvButton, "Only available option when running this utility from a machine without MS Excel installed.")
-
-    try{
-        #will fail if Excel not installed on the system running this script
-        $excel = New-Object -ComObject excel.application -ErrorAction Stop
-        $workbook = $excel.Workbooks.Add()
-        Add-Type -AssemblyName Microsoft.Office.Interop.Excel
-        $xlChart=[Microsoft.Office.Interop.Excel.XLChartType]
-        } 
-    catch {
-        $xlsButton.Enabled = $false
-        $xlsButton.Checked = $false
-        $csvButton.Checked = $true
-    }
-
-    $form.Topmost = $true
-    $result = $form.ShowDialog()
-
-    if ($result -eq [System.Windows.Forms.DialogResult]::OK)
-    {
-        $server = $cxServer.Text
-        $serverRestEndpoint = $server + "/CxRestAPI/"
-        $cxUsername = $cxUser.Text
-        $cxPassword = $cxPass.Text
-        $obfuscate = $privateCBX.Checked
-
-        If($csvButton.Checked -eq $true){
-            $useExcel = $false
-        }
-        Else{
-            $useExcel = $true
-        }
-
-        generateReports
-    }
-
-}
-
-showForm
-
 function generateReports() {
     Clear-Host
     Remove-Item $tableFile -ErrorAction SilentlyContinue
@@ -797,5 +668,132 @@ function addTableWithoutPivot($chartSheet, $rawDataSheet, $title, $range, $chart
 
     $global:chartCount++
     $global:chartOffset += $height + 10
-
 }
+
+function showForm(){
+    $form = New-Object System.Windows.Forms.Form
+    $form.ShowIcon = $false
+    $form.Text = 'CxSAST Scans Analysis'
+    $form.Size = New-Object System.Drawing.Size(490,245)
+    $form.StartPosition = 'CenterScreen'
+
+    $OKButton = New-Object System.Windows.Forms.Button
+    $OKButton.Location = New-Object System.Drawing.Point(150,160)
+    $OKButton.Size = New-Object System.Drawing.Size(75,23)
+    $OKButton.Text = 'RUN'
+    $OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+    $form.AcceptButton = $OKButton
+    $form.Controls.Add($OKButton)
+
+    $CancelButton = New-Object System.Windows.Forms.Button
+    $CancelButton.Location = New-Object System.Drawing.Point(230,160)
+    $CancelButton.Size = New-Object System.Drawing.Size(75,23)
+    $CancelButton.Text = 'CANCEL'
+    $CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+    $form.CancelButton = $CancelButton
+    $form.Controls.Add($CancelButton)
+
+    $label = New-Object System.Windows.Forms.Label
+    $label.Location = New-Object System.Drawing.Point(20,20)
+    $label.Size = New-Object System.Drawing.Size(130,20)
+    $label.Text = 'CxSAST Host:'
+    $form.Controls.Add($label)
+
+    $cxServer = New-Object System.Windows.Forms.TextBox
+    $cxServer.Location = New-Object System.Drawing.Point(150,20)
+    $cxServer.Size = New-Object System.Drawing.Size(250,20)
+    $form.Controls.Add($cxServer)
+
+    $label = New-Object System.Windows.Forms.Label
+    $label.Location = New-Object System.Drawing.Point(20,45)
+    $label.Size = New-Object System.Drawing.Size(130,20)
+    $label.Text = 'CxSAST Username:'
+    $form.Controls.Add($label)
+
+    $cxUser = New-Object System.Windows.Forms.TextBox
+    $cxUser.Location = New-Object System.Drawing.Point(150,45)
+    $cxUser.Size = New-Object System.Drawing.Size(150,20)
+    $form.Controls.Add($cxUser)
+
+    $label = New-Object System.Windows.Forms.Label
+    $label.Location = New-Object System.Drawing.Point(20,70)
+    $label.Size = New-Object System.Drawing.Size(130,20)
+    $label.Text = 'CxSAST Password:'
+    $form.Controls.Add($label)
+
+    $cxPass = New-Object Windows.Forms.MaskedTextBox
+    $cxPass.PasswordChar = '*'
+    $cxPass.Location = New-Object System.Drawing.Point(150,70)
+    $cxPass.Size = New-Object System.Drawing.Size(150,20)
+    $form.Controls.Add($cxPass)
+
+    $label = New-Object System.Windows.Forms.Label
+    $label.Location = New-Object System.Drawing.Point(20,95)
+    $label.Size = New-Object System.Drawing.Size(130,20)
+    $label.Text = 'Report Type'
+    $form.Controls.Add($label)
+
+    $xlsButton = New-Object System.Windows.Forms.RadioButton
+    $xlsButton.Location = '150,95'
+    $xlsButton.size = '70,20'
+    $xlsButton.Checked = $true 
+    $xlsButton.Text = "Excel"
+    $form.Controls.Add($xlsButton)
+ 
+    $csvButton = New-Object System.Windows.Forms.RadioButton
+    $csvButton.Location = '220,95'
+    $csvButton.size = '150,20'
+    $csvButton.Checked = $false
+    $csvButton.Text = "Text Summary + CSV"
+    $form.Controls.Add($csvButton)
+
+    $privateCBX = New-Object System.Windows.Forms.CheckBox
+    $privateCBX.Location = '150,120'
+    $privateCBX.size = '350,20'
+    $privateCBX.Checked = $false
+    $privateCBX.Text = "Remove any identifying information (e.g., project name)"
+    $form.Controls.Add($privateCBX)
+
+    $cxServer.Text = $server
+    $cxUser.Text = $cxUsername
+    $cxPass.Text = $cxPassword
+
+    $tooltip1 = New-Object System.Windows.Forms.ToolTip
+    $tooltip1.SetToolTip($csvButton, "Only available option when running this utility from a machine without MS Excel installed.")
+
+    try{
+        #will fail if Excel not installed on the system running this script
+        $excel = New-Object -ComObject excel.application -ErrorAction Stop
+        $workbook = $excel.Workbooks.Add()
+        Add-Type -AssemblyName Microsoft.Office.Interop.Excel
+        $xlChart=[Microsoft.Office.Interop.Excel.XLChartType]
+        } 
+    catch {
+        $xlsButton.Enabled = $false
+        $xlsButton.Checked = $false
+        $csvButton.Checked = $true
+    }
+
+    $form.Topmost = $true
+    $result = $form.ShowDialog()
+
+    if ($result -eq [System.Windows.Forms.DialogResult]::OK)
+    {
+        $server = $cxServer.Text
+        $serverRestEndpoint = $server + "/CxRestAPI/"
+        $cxUsername = $cxUser.Text
+        $cxPassword = $cxPass.Text
+        $obfuscate = $privateCBX.Checked
+
+        If($csvButton.Checked -eq $true){
+            $useExcel = $false
+        }
+        Else{
+            $useExcel = $true
+        }
+
+        generateReports
+    }
+}
+
+showForm
