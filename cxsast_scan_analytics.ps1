@@ -140,14 +140,14 @@ function showForm(){
             $useExcel = $true
         }
 
-        main
+        go
     }
 
 }
 
 showForm
 
-function main(){
+function go(){
     Clear-Host
     Remove-Item $tableFile -ErrorAction SilentlyContinue
     Remove-Item $dataFile -ErrorAction SilentlyContinue
