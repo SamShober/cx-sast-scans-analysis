@@ -19,8 +19,6 @@ $useExcel = $false
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
 
-showForm
-
 function showForm(){
     $form = New-Object System.Windows.Forms.Form
     $form.ShowIcon = $false
@@ -146,6 +144,8 @@ function showForm(){
     }
 
 }
+
+showForm
 
 function main(){
     Clear-Host
