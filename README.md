@@ -13,6 +13,12 @@ If the utility is being run from a machine that has MS Excel installed, the user
 * MS Excel (one file)
 * Summary.txt and data.csv
 
+Scans included in the reporting can be limited by selecting
+
+* Last 3 months (gets only scans from last 3 months until now)
+* Last 6 months (gets only scans from last 6 months until now)
+* All Time
+
 There is also an option to redact identifiable information from the result set including:
 
 * Project names
