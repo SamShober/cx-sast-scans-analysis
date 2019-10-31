@@ -1,6 +1,7 @@
-$server = "http://services.sekots.org"
-$cxUsername = "Chris"
-$cxPassword = "Cx123456!!11"
+$VERSION = '1.0'
+$server = ""
+$cxUsername = ""
+$cxPassword = ""
 $serverRestEndpoint = $server + "/CxRestAPI/"
 $tableFile = ".\summary.txt"
 $dataFile = ".\data.csv"
