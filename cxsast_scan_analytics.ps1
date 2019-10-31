@@ -1,4 +1,4 @@
-$VERSION = '1.0'
+$VERSION = '1.1'
 $server = ""
 $cxUsername = ""
 $cxPassword = ""
@@ -25,7 +25,7 @@ Add-Type -AssemblyName System.Drawing
 function showForm(){
     $form = New-Object System.Windows.Forms.Form
     $form.ShowIcon = $false
-    $form.Text = 'CxSAST Scans Analysis'
+    $form.Text = 'CxSAST Scans Analysis ' + $VERSION
     $form.Size = New-Object System.Drawing.Size(490,270)
     $form.StartPosition = 'CenterScreen'
 
