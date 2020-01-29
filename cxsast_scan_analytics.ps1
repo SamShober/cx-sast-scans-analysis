@@ -70,7 +70,7 @@ function showForm(){
     $label = New-Object System.Windows.Forms.Label
     $label.Location = New-Object System.Drawing.Point(20,70)
     $label.Size = New-Object System.Drawing.Size(130,20)
-    $label.Text = 'CxSAST Username:'
+    $label.Text = 'CxSAST Password:'
     $form.Controls.Add($label)
 
     $cxPass = New-Object Windows.Forms.MaskedTextBox
