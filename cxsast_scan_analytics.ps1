@@ -2,7 +2,7 @@ $VERSION = '1.1'
 $server = ""
 $cxUsername = ""
 $cxPassword = ""
-$serverRestEndpoint = $server + "/CxRestAPI/"
+$serverRestEndpoint = ""
 $tableFile = ".\summary.txt"
 $dataFile = ".\data.csv"
 
@@ -166,6 +166,7 @@ function showForm(){
     if ($result -eq [System.Windows.Forms.DialogResult]::OK)
     {
         $server = $cxServer.Text
+        $serverRestEndpoint = $server + "/CxRestAPI/"
         $cxUsername = $cxUser.Text
         $cxPassword = $cxPass.Text
         $obfuscate = $privateCBX.Checked
