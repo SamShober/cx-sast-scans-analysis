@@ -1,5 +1,6 @@
 # cx-sast-scans-analysis
 Powershell utility to pull scan data / build metrics from a CxSAST instance
+Works with CxSAST 9.0+
 
 # Usage
 Running the utility will launch a powershell UI to collect the following information
